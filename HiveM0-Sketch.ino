@@ -39,12 +39,11 @@ void setup(void)
   LEDs_off();
     
   init_Temp();
-
   init_Weight();
 
-  set_Weight_calib(8388607.0, 4.2);
-
-  set_Weight_calib(12345.0, 42.0);
+  //param1 = calib_val (at 1000g); param2 = offset_val(at 0g);
+  set_Weight_calib(1622203.0, -329233);
+  //set_Weight_calib(12345.0, 42.0);
 
   //test.write(1.23);
 
@@ -52,6 +51,7 @@ void setup(void)
 
   /****** nbiot init *******/
 
+  
   DEBUG_STREAM.begin(DEBUG_STREAM_BAUD);
   DEBUG_STREAM.println("Initializing and connecting... ");
 
@@ -66,7 +66,6 @@ void setup(void)
   //send startup message // ToDO: sendmessageUDP function variable übergeben können
   //String 
   sendMessageThroughUDP("EASYHIVE STARTUP");
-    
 }
 
 /*
@@ -86,20 +85,19 @@ void loop(void)
   SerialUSB.println(weight_val);
   delay(500);
 
-  weight_val = get_Weight_raw();  
+  long weight_val_raw = get_Weight_raw();  
   SerialUSB.print("Weight Raw: ");
-  SerialUSB.println(weight_val);
+  SerialUSB.println(weight_val_raw, DEC);
   delay(500);
 
-  float w_calib;   
-  float w_offset; 
-  get_Weight_calib(&w_calib, &w_offset);
-  
-  SerialUSB.println(w_calib);
-  SerialUSB.println(w_offset); 
+  //float w_calib;   
+  //float w_offset; 
+  //get_Weight_calib(&w_calib, &w_offset);
+  //SerialUSB.println(w_calib);
+  //SerialUSB.println(w_offset); 
   
   SerialUSB.println("");  
-  
+  /*
   if (!nbiot.isConnected()) {
         if (!nbiot.connect(apn, cdp, forceOperator, 8)) {
             DEBUG_STREAM.println("Failed to connect to the modem!");
@@ -110,6 +108,6 @@ void loop(void)
       const char* msg;
       msg = sendMessageThroughUDP("test");
       checkMessage(msg);
-  }
+  }*/
 }
   
